@@ -103,7 +103,8 @@
   border-radius: 12px;
   padding: 20px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  border: 1px solid var(--color-text);
 }
 
 .featuredLive h3 {
@@ -148,7 +149,7 @@
   border-radius: 12px;
   padding: 20px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-text);
 }
 
 .videoInfo {

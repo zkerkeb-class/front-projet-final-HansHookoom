@@ -18,13 +18,13 @@
 .message {
   font-size: 24px;
   margin: 20px 0;
-  color: #ffffff;
+  color: var(--color-text);
 }
 
 .subMessage {
   font-size: 18px;
   margin-bottom: 40px;
-  color: #cccccc;
+  color: var(--color-text);
 }
 
 .gameWrapper {

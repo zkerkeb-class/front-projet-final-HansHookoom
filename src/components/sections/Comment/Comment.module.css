@@ -346,7 +346,7 @@
     margin-left: 12px;
     padding-left: 12px;
   }
-} 
+}
 
 :global(body[data-theme='light']) .commentContainer,
 :global(body[data-theme='light']) .comment,

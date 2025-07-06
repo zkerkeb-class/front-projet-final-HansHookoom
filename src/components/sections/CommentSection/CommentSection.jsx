@@ -4,6 +4,7 @@ import ApiService from '../../../services/ApiService';
 import Comment from '../Comment/Comment';
 import styles from './CommentSection.module.css';
 import { useTranslation } from 'react-i18next';
+import AnimatedText from '../../ui/AnimatedText/AnimatedText';
 
 const CommentSection = ({ contentId, contentType }) => {
   const [comments, setComments] = useState([]);
@@ -228,18 +229,20 @@ const CommentSection = ({ contentId, contentType }) => {
     <div className={styles.commentSection}>
       <div className={styles.sectionHeader}>
         <h3 className={styles.title}>
-          {t('comments.title', { count: totalComments })}
+          <AnimatedText deps={[t, totalComments]}>{t('comments.title', { count: totalComments })}</AnimatedText>
         </h3>
         
         <div className={styles.sortContainer}>
-          <label className={styles.sortLabel}>{t('comments.sortBy')}</label>
+          <AnimatedText deps={[t]}>
+            <label className={styles.sortLabel}>{t('comments.sortBy')}</label>
+          </AnimatedText>
           <select 
             value={sortBy} 
             onChange={(e) => setSortBy(e.target.value)}
             className={styles.sortSelect}
           >
-            <option value="recent">{t('comments.mostRecent')}</option>
-            <option value="likes">{t('comments.mostLiked')}</option>
+            <option value="recent"><AnimatedText deps={[t]}>{t('comments.mostRecent')}</AnimatedText></option>
+            <option value="likes"><AnimatedText deps={[t]}>{t('comments.mostLiked')}</AnimatedText></option>
           </select>
         </div>
       </div>
@@ -258,14 +261,16 @@ const CommentSection = ({ contentId, contentType }) => {
             className={styles.submitBtn}
             disabled={submitting || !newComment.trim()}
           >
-            {submitting ? t('comments.publishing') : t('comments.publish')}
+            <AnimatedText deps={[t, submitting]}>
+              {submitting ? t('comments.publishing') : t('comments.publish')}
+            </AnimatedText>
           </button>
         </form>
       )}
 
       {!isAuthenticated && (
         <p className={styles.loginPrompt}>
-          {t('comments.loginPrompt')}
+          <AnimatedText deps={[t]}>{t('comments.loginPrompt')}</AnimatedText>
         </p>
       )}
 
@@ -290,13 +295,17 @@ const CommentSection = ({ contentId, contentType }) => {
             className={styles.loadMoreBtn}
             disabled={loadingMore}
           >
-            {loadingMore ? t('comments.loading') : t('comments.loadMore', { count: totalComments - comments.length })}
+            <AnimatedText deps={[t, loadingMore, totalComments, comments.length]}>
+              {loadingMore ? t('comments.loading') : t('comments.loadMore', { count: totalComments - comments.length })}
+            </AnimatedText>
           </button>
         </div>
       )}
 
       {comments.length === 0 && (
-        <p className={styles.noComments}>{t('comments.none')}</p>
+        <p className={styles.noComments}>
+          <AnimatedText deps={[t]}>{t('comments.none')}</AnimatedText>
+        </p>
       )}
     </div>
   );
