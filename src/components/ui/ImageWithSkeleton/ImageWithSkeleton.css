@@ -1,0 +1,35 @@
+.image-with-skeleton {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.image-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.skeleton-image.loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.skeleton-image.loaded {
+  opacity: 1;
+  pointer-events: auto;
+} 

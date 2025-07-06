@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segarow - Hors ligne</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #191D32; /* Couleur principale du site */
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .offline-container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .offline-title {
+            font-size: 48px;
+            margin: 0 0 10px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sonic-icon {
+            font-size: 40px;
+            animation: spin 3s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .offline-subtitle {
+            font-size: 24px;
+            margin: 0 0 20px 0;
+            opacity: 0.9;
+        }
+
+        .offline-message {
+            font-size: 18px;
+            margin: 0 0 40px 0;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-frame {
+            width: 1200px;
+            height: 300px;
+            border: none;
+            border-radius: 10px;
+            background: #f7f7f7;
+        }
+
+        .connection-status {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4444;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: #44ff44;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .offline-title {
+                font-size: 36px;
+            }
+
+            .sonic-icon {
+                font-size: 32px;
+            }
+
+            .offline-subtitle {
+                font-size: 20px;
+            }
+
+            .offline-message {
+                font-size: 16px;
+            }
+
+            .game-container {
+                padding: 10px;
+            }
+
+            .game-frame {
+                width: 100%;
+                height: 200px;
+                max-width: 600px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-frame {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <h1 class="offline-title">
+            <span class="sonic-icon">🌀</span>
+            SEGAROW
+        </h1>
+        <h2 class="offline-subtitle">Mode Hors Ligne</h2>
+        <p class="offline-message">
+            Oups ! Il semble que vous n'ayez pas de connexion internet.<br>
+            Pas de panique, amusez-vous avec notre jeu Sonic en attendant !
+        </p>
+
+        <div class="game-container">
+            <iframe 
+                src="/dino_sonic/sonic_dino_game.html" 
+                class="game-frame"
+                title="Sonic Dino Game - Mode Hors Ligne"
+                allowfullscreen
+                onload="console.log('🎮 Jeu Sonic chargé dans iframe')"
+                onerror="console.log('❌ Erreur chargement jeu Sonic')">
+            </iframe>
+        </div>
+
+        <div class="connection-status">
+            <span class="status-indicator" id="statusIndicator"></span>
+            <span id="statusText">Hors ligne</span>
+        </div>
+    </div>
+
+    <script>
+        let isOnline = navigator.onLine;
+        let countdownInterval = null; // Variable globale pour le timer
+        
+        // Forcer la mise à jour du Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistration().then((registration) => {
+                if (registration) {
+                    registration.update();
+                    console.log('🔄 Service Worker mis à jour');
+                    
+                    // Écouter les messages du Service Worker
+                    navigator.serviceWorker.addEventListener('message', (event) => {
+                        console.log('📨 Message du Service Worker:', event.data);
+                    });
+                }
+            });
+            
+            // Déboguer le cache
+            navigator.serviceWorker.ready.then(() => {
+                caches.keys().then((cacheNames) => {
+                    console.log('📦 Caches disponibles:', cacheNames);
+                    cacheNames.forEach((cacheName) => {
+                        caches.open(cacheName).then((cache) => {
+                            cache.keys().then((keys) => {
+                                console.log(`🗂️ Fichiers en cache (${cacheName}):`, keys.map(k => k.url));
+                            });
+                        });
+                    });
+                });
+            });
+        }
+        
+        function updateConnectionStatus() {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            if (navigator.onLine) {
+                indicator.classList.add('online');
+                statusText.textContent = 'Connexion rétablie ! Redirection dans 15s...';
+                
+                // Annuler le timer précédent s'il existe
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                
+                // Rediriger vers l'accueil après 15 secondes
+                let countdown = 15;
+                countdownInterval = setInterval(() => {
+                    countdown--;
+                    statusText.textContent = `Connexion rétablie ! Redirection dans ${countdown}s...`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                        window.location.href = '/';
+                    }
+                }, 1000);
+            } else {
+                // Connexion perdue - annuler le timer de redirection
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    console.log('⚠️ Timer de redirection annulé - Connexion perdue');
+                }
+                
+                indicator.classList.remove('online');
+                statusText.textContent = 'Hors ligne';
+            }
+        }
+
+
+
+        // Écouter les changements de statut de connexion
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Vérification périodique de la connexion
+        setInterval(() => {
+            if (navigator.onLine && !isOnline) {
+                checkConnection();
+            }
+            isOnline = navigator.onLine;
+        }, 5000);
+
+        // Initialiser le statut
+        updateConnectionStatus();
+    </script>
+</body>
+</html> 
