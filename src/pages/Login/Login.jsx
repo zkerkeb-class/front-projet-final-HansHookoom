@@ -76,8 +76,8 @@ const Login = () => {
       const data = await ApiService.post('/api/auth/register', {
         email: credentials.email,
         password: credentials.password,
-        username: credentials.username,
-        role: 'visitor' // Par défaut utilisateur normal (correspond à MongoDB)
+        username: credentials.username
+        // role: 'visitor' // Supprimé, géré côté backend
       });
 
       // Inscription réussie, connexion automatique

@@ -112,7 +112,7 @@
 
 /* Classe pour désactiver les transitions temporairement */
 .noTransition {
-  transition: none !important;
+  transition: none;
 }
 
 .mainMenu.active {
@@ -142,7 +142,7 @@
 }
 
 .mainMenu a:hover {
-  color: var(--color-text);
+  /* color: var(--color-text); */
   background-color: rgba(242, 170, 121, 0.08);
   border: 2px solid var(--color-primary);
   transform: translateY(-2px) scale(1.04);
@@ -158,15 +158,15 @@
 
 [data-theme='light'] .mainMenu a.activeLink,
 [data-theme='light'] .mainMenu a:hover {
-  color: #191D32 !important;
+  color: #191D32;
   border: 2px solid var(--color-primary);
-  font-weight: normal !important;
+  font-weight: normal;
 }
 [data-theme='dark'] .mainMenu a.activeLink,
 [data-theme='dark'] .mainMenu a:hover {
-  color: #fff !important;
+  /* color: #fff; */
   border: 2px solid var(--color-primary);
-  font-weight: normal !important;
+  font-weight: normal;
 }
 
 /* Menu utilisateur avec dropdown */
@@ -261,17 +261,16 @@
 .userDropdownMenu .dropdownItem.active {
   background: rgba(255, 255, 255, 0.1);
   color: #f0f0f0;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  transform: none !important;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  transform: none;
 }
-
 [data-theme='light'] .userDropdownMenu .dropdownItem:hover,
 [data-theme='light'] .userDropdownMenu .dropdownItem.active {
-  background: #f4f6fa !important;
-  color: #191D32 !important;
-  transform: none !important;
+  background: #f4f6fa;
+  color: #191D32;
+  transform: none;
 }
 
 /* Reset spécifique pour les boutons dans le dropdown */
@@ -483,8 +482,8 @@
 .themeIconWrapper {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
   vertical-align: middle;
   overflow: hidden;
 }
@@ -591,14 +590,14 @@
 }
 
 .langToggleBtn {
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
+  background: none;
+  border: none;
+  padding: 0;
   width: 48px;
   height: 40px;
   display: block;
-  box-shadow: none !important;
-  border-radius: 0 !important;
+  box-shadow: none;
+  border-radius: 0;
   cursor: pointer;
   transition: transform 0.18s cubic-bezier(0.4,0,0.2,1);
 }

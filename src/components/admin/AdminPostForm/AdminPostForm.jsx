@@ -18,7 +18,7 @@ const AdminPostForm = ({ type, initialData, onSubmit, onCancel }) => {
     image: '',
     secondaryImage: '',
     readingTime: '',
-    // Champs spécifiques aux reviews
+    // Champs spécifiques aux reviews UNIQUEMENT
     rating: '',
     gameTitle: '',
     platform: '',
@@ -40,6 +40,7 @@ const AdminPostForm = ({ type, initialData, onSubmit, onCancel }) => {
         image: initialData.image || '',
         secondaryImage: initialData.secondaryImage || '',
         readingTime: initialData.readingTime || '',
+        // Champs spécifiques aux reviews UNIQUEMENT
         rating: initialData.rating || '',
         gameTitle: initialData.gameTitle || '',
         platform: initialData.platform || '',
@@ -95,7 +96,13 @@ const AdminPostForm = ({ type, initialData, onSubmit, onCancel }) => {
 
       // Préparer les données à envoyer
       const dataToSend = { ...formData };
-      
+      // SUPPRIMER rating si ce n'est pas une review
+      if (type !== 'reviews') {
+        delete dataToSend.rating;
+        delete dataToSend.gameTitle;
+        delete dataToSend.platform;
+        delete dataToSend.genre;
+      }
       // Pour les reviews, convertir la note en nombre
       if (type === 'reviews' && dataToSend.rating) {
         dataToSend.rating = parseFloat(dataToSend.rating);
